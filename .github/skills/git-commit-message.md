@@ -95,3 +95,5 @@ support with configurable backoff.
 - [ ] If a body is included, there is a blank line between subject and body
 - [ ] Body lines are 72 characters or fewer (hard-wrapped)
 - [ ] The message explains *what* and *why*, not *how*
+- [ ] No reference of yourself exists in the commit message
+- [ ] Get user approval by providing a preview for review, if approved proceed, if rejected evaluate feedback and reattempt task
