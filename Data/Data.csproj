@@ -18,4 +18,8 @@
     <EmbeddedResource Include="Seeds\mock-makes-and-models.sql" />
   </ItemGroup>
 
+  <ItemGroup>
+    <ProjectReference Include="..\Domain\Domain.csproj" />
+  </ItemGroup>
+
 </Project>

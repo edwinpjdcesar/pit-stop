@@ -78,7 +78,7 @@ INSERT INTO @tempMake (Code, Description) VALUES
 ('YUGO', 'Yugo');
 
 --	Inject any values that are missing from temp table.
-INSERT INTO Make (Code, Description)
+INSERT INTO Make (Code, Name)
 SELECT *
 FROM @tempMake;
 
@@ -1447,7 +1447,7 @@ INSERT INTO @tempModels2 (MakeId, Code, Description) VALUES
 (71, 'YUOTH', 'Other Yugo Models');
 
 -- Combine data from each table to populate original.
-INSERT INTO Model (MakeId, Code, Description)
+INSERT INTO Model (MakeId, Code, Name)
 SELECT *
 FROM @tempModels1
 UNION
@@ -1457,9 +1457,9 @@ FROM @tempModels2
 -- Corrections for data from third party source
 -- Remove ' - ' prefix
 UPDATE Model
-SET Description = STUFF(Description, 1, 3, '')
-WHERE Description LIKE ' - %';
+SET Name = STUFF(Name, 1, 3, '')
+WHERE Name LIKE ' - %';
 
 -- Remove 'Other' records
 DELETE FROM Model
-WHERE Description LIKE 'Other%' OR Description LIKE '% Models (%';
+WHERE Name LIKE 'Other%' OR Name LIKE '% Models (%';
