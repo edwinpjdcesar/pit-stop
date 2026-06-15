@@ -97,3 +97,4 @@ support with configurable backoff.
 - [ ] The message explains *what* and *why*, not *how*
 - [ ] No reference of yourself exists in the commit message
 - [ ] Get user approval by providing a preview for review, if approved proceed, if rejected evaluate feedback and reattempt task
+- [ ] Preview is displayed in a code block so the commit message is clearly distinct from surrounding commentary
