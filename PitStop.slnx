@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Tests/">
+    <Project Path="Tests/Core.IntegrationTests/Core.IntegrationTests.csproj" />
     <Project Path="Tests/Core.UnitTests/Core.UnitTests.csproj" />
   </Folder>
   <Project Path="Api/Api.csproj" Id="39bcb6ea-28de-4f05-808c-40c6d8f67f56" />
