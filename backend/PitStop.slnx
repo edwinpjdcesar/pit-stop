@@ -1,0 +1,13 @@
+<Solution>
+  <Folder Name="/tests/">
+    <Project Path="tests/Api.UnitTests/Api.UnitTests.csproj" />
+    <Project Path="tests/Core.IntegrationTests/Core.IntegrationTests.csproj" />
+    <Project Path="tests/Core.UnitTests/Core.UnitTests.csproj" />
+  </Folder>
+  <Folder Name="/src/">
+    <Project Path="src/Api/Api.csproj" Id="39bcb6ea-28de-4f05-808c-40c6d8f67f56" />
+    <Project Path="src/Core/Core.csproj" Id="b263192c-b0cb-4735-825a-f1339bc8f02d" />
+    <Project Path="src/Data/Data.csproj" Id="bdd9ec3c-770c-4aee-b91e-66d0b9a836ac" />
+    <Project Path="src/Domain/Domain.csproj" Id="320dda29-0389-4c80-b59a-25547f043f81" />
+  </Folder>
+</Solution>
