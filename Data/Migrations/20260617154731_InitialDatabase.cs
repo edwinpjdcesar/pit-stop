@@ -94,14 +94,12 @@ namespace Data.Migrations
                         name: "FK_Vehicle_Make_MakeId",
                         column: x => x.MakeId,
                         principalTable: "Make",
-                        principalColumn: "MakeId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "MakeId");
                     table.ForeignKey(
                         name: "FK_Vehicle_Model_ModelId",
                         column: x => x.ModelId,
                         principalTable: "Model",
-                        principalColumn: "ModelId",
-                        onDelete: ReferentialAction.Cascade);
+                        principalColumn: "ModelId");
                 });
 
             migrationBuilder.CreateTable(
