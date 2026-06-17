@@ -23,12 +23,14 @@ public class VehicleConfiguration : IEntityTypeConfiguration<Vehicle>
         builder.HasOne(v => v.Make)
             .WithMany()
             .HasForeignKey(v => v.MakeId)
-            .IsRequired();
+            .IsRequired()
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasOne(v => v.Model)
             .WithMany()
             .HasForeignKey(v => v.ModelId)
-            .IsRequired();
+            .IsRequired()
+            .OnDelete(DeleteBehavior.NoAction);
 
         builder.HasMany(v => v.MaintenanceRecords)
             .WithOne(m => m.Vehicle)

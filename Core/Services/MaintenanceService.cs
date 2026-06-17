@@ -80,6 +80,16 @@ public class MaintenanceService : IMaintenanceService
         await _context.SaveChangesAsync(cancellationToken);
     }
 
+    public async Task ValidateOwnershipAsync(Guid vehicleId, Guid maintenanceId, CancellationToken cancellationToken = default)
+    {
+        var maintenance = await _context.MaintenanceRecords
+            .FirstOrDefaultAsync(m => m.MaintenanceId == maintenanceId, cancellationToken)
+            ?? throw new NotFoundException(nameof(Maintenance), maintenanceId);
+
+        if (maintenance.VehicleId != vehicleId)
+            throw new ConflictException($"Maintenance {maintenanceId} does not belong to vehicle {vehicleId}.");
+    }
+
     private static MaintenanceResponse ToResponse(Maintenance m) => new(
         m.MaintenanceId,
         m.VehicleId,

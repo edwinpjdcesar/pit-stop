@@ -15,7 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Seeds\mock-makes-and-models.sql" />
+    <EmbeddedResource Include="Seeds\makes.sql" />
+    <EmbeddedResource Include="Seeds\models.sql" />
   </ItemGroup>
 
   <ItemGroup>

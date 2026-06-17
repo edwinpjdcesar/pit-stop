@@ -106,9 +106,12 @@ public class VehicleService : IVehicleService
         if (!makeExists)
             throw new NotFoundException(nameof(Make), makeId);
 
-        var modelExists = await _context.Models.AnyAsync(m => m.ModelId == modelId && m.MakeId == makeId, cancellationToken);
-        if (!modelExists)
+        var model = await _context.Models.FirstOrDefaultAsync(m => m.ModelId == modelId, cancellationToken);
+        if (model is null)
             throw new NotFoundException(nameof(Model), modelId);
+
+        if (model.MakeId != makeId)
+            throw new ConflictException($"Model {modelId} does not belong to make {makeId}.");
     }
 
     private static VehicleResponse ToResponse(Vehicle v) => new(
