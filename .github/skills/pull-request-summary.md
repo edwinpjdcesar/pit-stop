@@ -54,6 +54,8 @@ These apply regardless of the size of the change:
 
 5. **Earn every word.** If a sentence doesn't help the reviewer understand the change, cut it.
 
+6. **Write GitHub markdown.** The PR body renders as GitHub-flavored markdown. Use headings, bullet lists, inline code, and code blocks where they improve readability. Don't write plain prose when structure would make it clearer.
+
 ---
 
 ## PR description format
@@ -78,6 +80,28 @@ Use this structure when writing the PR description:
 ```
 
 Only include sections that add value. For a minor fix, just the `## Summary` section is fine.
+
+---
+
+## Pre-submission checklist
+
+Before creating the PR, verify every item below. Do not skip this step.
+
+### Content
+- [ ] The summary explains what changed and why in plain language
+- [ ] No filler phrases (`This PR introduces...`, `Leveraging...`, `Utilize...`, etc.)
+- [ ] Every sentence earns its place — remove anything that doesn't help the reviewer
+
+### GitHub markdown rendering
+- [ ] Headings use `##` or `###` — they will render as styled headings, not raw `##` text
+- [ ] Inline code uses single backticks (e.g., `` `MyClass` ``) — they will render highlighted
+- [ ] Bullet lists use `-` with a space — they will render as a list, not raw `-` text
+- [ ] No shell-escaped characters in the body (e.g., `\`` or `\"`) — these will appear as literal characters in the rendered output and break formatting
+- [ ] The body is written to a temp file and passed via `--body-file` when using `gh pr create` — passing the body inline with `--body` causes shell escaping that corrupts markdown
+
+### Delivery
+- [ ] Show the user the title and body for approval before creating the PR
+- [ ] Display the preview in a code block so it is clearly distinct from surrounding commentary
 
 ---
 
