@@ -95,7 +95,7 @@ public class VehicleServiceTests
     }
 
     [Fact]
-    public async Task CreateAsync_ModelDoesNotBelongToMake_ThrowsNotFoundException()
+    public async Task CreateAsync_ModelDoesNotExist_ThrowsNotFoundException()
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
@@ -106,6 +106,26 @@ public class VehicleServiceTests
 
         // Act
         var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.CreateAsync(request));
+
+        // Assert
+        Assert.Contains("Model", ex.Message);
+    }
+
+    [Fact]
+    public async Task CreateAsync_ModelBelongsToDifferentMake_ThrowsConflictException()
+    {
+        // Arrange
+        await using var context = TestDbContextFactory.Create();
+        await DbSeeder.SeedMakeAndModelAsync(context);
+        context.Makes.Add(new Domain.Entities.Make { MakeId = 2, Code = "TOYOTA", Name = "Toyota" });
+        context.Models.Add(new Domain.Entities.Model { ModelId = 2, MakeId = 2, Code = "CAMRY", Name = "Camry" });
+        await context.SaveChangesAsync();
+        var service = new VehicleService(context);
+        var request = new VehicleRequest(MakeId: 1, ModelId: 2, VIN: null, LicensePlate: null,
+            Year: 2020, PurchaseDate: null, PurchasePrice: null, MileageAtPurchase: null, Mileage: null);
+
+        // Act
+        var ex = await Assert.ThrowsAsync<ConflictException>(() => service.CreateAsync(request));
 
         // Assert
         Assert.Contains("Model", ex.Message);
@@ -147,6 +167,27 @@ public class VehicleServiceTests
 
         // Assert
         Assert.Single(context.Vehicles);
+    }
+
+    [Fact]
+    public async Task UpdateAsync_ModelBelongsToDifferentMake_ThrowsConflictException()
+    {
+        // Arrange
+        await using var context = TestDbContextFactory.Create();
+        await DbSeeder.SeedMakeAndModelAsync(context);
+        var vehicle = await DbSeeder.SeedVehicleAsync(context);
+        context.Makes.Add(new Domain.Entities.Make { MakeId = 2, Code = "TOYOTA", Name = "Toyota" });
+        context.Models.Add(new Domain.Entities.Model { ModelId = 2, MakeId = 2, Code = "CAMRY", Name = "Camry" });
+        await context.SaveChangesAsync();
+        var service = new VehicleService(context);
+        var request = new VehicleRequest(MakeId: 1, ModelId: 2, VIN: null, LicensePlate: null,
+            Year: 2020, PurchaseDate: null, PurchasePrice: null, MileageAtPurchase: null, Mileage: null);
+
+        // Act
+        var ex = await Assert.ThrowsAsync<ConflictException>(() => service.UpdateAsync(vehicle.VehicleId, request));
+
+        // Assert
+        Assert.Contains("Model", ex.Message);
     }
 
     [Fact]

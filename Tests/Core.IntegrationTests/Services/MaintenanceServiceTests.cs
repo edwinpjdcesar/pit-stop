@@ -201,4 +201,58 @@ public class MaintenanceServiceTests
         // Assert
         Assert.Empty(context.MaintenanceRecords);
     }
+
+    [Fact]
+    public async Task ValidateOwnershipAsync_MaintenanceDoesNotExist_ThrowsNotFoundException()
+    {
+        // Arrange
+        await using var context = TestDbContextFactory.Create();
+        await DbSeeder.SeedMakeAndModelAsync(context);
+        var vehicle = await DbSeeder.SeedVehicleAsync(context);
+        var service = new MaintenanceService(context);
+
+        // Act
+        var ex = await Assert.ThrowsAsync<NotFoundException>(() =>
+            service.ValidateOwnershipAsync(vehicle.VehicleId, Guid.NewGuid()));
+
+        // Assert
+        Assert.Contains("Maintenance", ex.Message);
+    }
+
+    [Fact]
+    public async Task ValidateOwnershipAsync_MaintenanceBelongsToDifferentVehicle_ThrowsConflictException()
+    {
+        // Arrange
+        await using var context = TestDbContextFactory.Create();
+        await DbSeeder.SeedMakeAndModelAsync(context);
+        var vehicle1 = await DbSeeder.SeedVehicleAsync(context);
+        var vehicle2 = await DbSeeder.SeedVehicleAsync(context);
+        var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle1.VehicleId);
+        var service = new MaintenanceService(context);
+
+        // Act
+        var ex = await Assert.ThrowsAsync<ConflictException>(() =>
+            service.ValidateOwnershipAsync(vehicle2.VehicleId, maintenance.MaintenanceId));
+
+        // Assert
+        Assert.Contains(maintenance.MaintenanceId.ToString(), ex.Message);
+    }
+
+    [Fact]
+    public async Task ValidateOwnershipAsync_MaintenanceBelongsToVehicle_CompletesSuccessfully()
+    {
+        // Arrange
+        await using var context = TestDbContextFactory.Create();
+        await DbSeeder.SeedMakeAndModelAsync(context);
+        var vehicle = await DbSeeder.SeedVehicleAsync(context);
+        var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle.VehicleId);
+        var service = new MaintenanceService(context);
+
+        // Act
+        var ex = await Record.ExceptionAsync(() =>
+            service.ValidateOwnershipAsync(vehicle.VehicleId, maintenance.MaintenanceId));
+
+        // Assert
+        Assert.Null(ex);
+    }
 }
