@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/Tests/">
+    <Project Path="Tests/Api.UnitTests/Api.UnitTests.csproj" />
     <Project Path="Tests/Core.IntegrationTests/Core.IntegrationTests.csproj" />
     <Project Path="Tests/Core.UnitTests/Core.UnitTests.csproj" />
   </Folder>
