@@ -15,20 +15,6 @@ var connectionString = builder.Configuration.GetConnectionString("DefaultConnect
 builder.Services.AddDataServices(connectionString);
 builder.Services.AddCoreServices();
 
-//  TODO: Eliminate CORS issue with docker compose + reverse proxy
-if (builder.Environment.IsDevelopment())
-{
-    builder.Services.AddCors(options =>
-    {
-        options.AddPolicy("AllowFrontend", policy =>
-        {
-            policy.WithOrigins("http://localhost:5173")
-                  .AllowAnyHeader()
-                  .AllowAnyMethod();
-        });
-    });
-}
-
 var app = builder.Build();
 
 using (var scope = app.Services.CreateScope())
@@ -46,11 +32,9 @@ if (app.Environment.IsDevelopment())
         options.Title = "PitStop API";
         options.WithDefaultHttpClient(ScalarTarget.CSharp, ScalarClient.HttpClient);
     });
-    app.UseCors("AllowFrontend");
 }
 
 app.UseMiddleware<ExceptionMiddleware>();
-app.UseHttpsRedirection();
 app.UseAuthorization();
 app.MapControllers();
 

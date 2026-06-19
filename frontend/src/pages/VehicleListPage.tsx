@@ -38,7 +38,7 @@ export default function VehicleListPage() {
         {error && <p className={styles.error}>{error}</p>}
 
         {!loading && !error && vehicles.length === 0 && (
-          <p className={styles.empty}>No vehicles yet. Add your first one.</p>
+          <p className={styles.empty}>No vehicles found.</p>
         )}
 
         {!loading && !error && vehicles.length > 0 && (
