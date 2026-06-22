@@ -20,7 +20,7 @@ public class MaintenanceServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
 
         // Act
         var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.GetByVehicleAsync(Guid.NewGuid()));
@@ -36,7 +36,7 @@ public class MaintenanceServiceTests
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
 
         // Act
         var result = await service.GetByVehicleAsync(vehicle.VehicleId);
@@ -57,7 +57,7 @@ public class MaintenanceServiceTests
             new Domain.Entities.Maintenance { MaintenanceId = Guid.NewGuid(), VehicleId = vehicle.VehicleId, Description = "Newer service", Mileage = 20000, ServiceDate = new DateTime(2025, 6, 1, 0, 0, 0, DateTimeKind.Utc) }
         );
         await context.SaveChangesAsync();
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
 
         // Act
         var result = await service.GetByVehicleAsync(vehicle.VehicleId);
@@ -73,7 +73,7 @@ public class MaintenanceServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
         var request = new MaintenanceRequest(OilChangeDescription, ServiceMileage, ServiceDate);
 
         // Act
@@ -90,7 +90,7 @@ public class MaintenanceServiceTests
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
         var request = new MaintenanceRequest(OilChangeDescription, ServiceMileage, ServiceDate);
 
         // Act
@@ -112,7 +112,7 @@ public class MaintenanceServiceTests
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
         var request = new MaintenanceRequest(OilChangeDescription, ServiceMileage, ServiceDate);
 
         // Act
@@ -129,7 +129,7 @@ public class MaintenanceServiceTests
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
         var request = new MaintenanceRequest(UpdatedDescription, UpdatedMileage, UpdatedServiceDate);
 
         // Act & Assert
@@ -145,7 +145,7 @@ public class MaintenanceServiceTests
         var vehicle1 = await DbSeeder.SeedVehicleAsync(context);
         var vehicle2 = await DbSeeder.SeedVehicleAsync(context);
         var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle1.VehicleId);
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
         var request = new MaintenanceRequest(UpdatedDescription, UpdatedMileage, UpdatedServiceDate);
 
         // Act & Assert
@@ -160,7 +160,7 @@ public class MaintenanceServiceTests
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
         var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle.VehicleId);
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
         var request = new MaintenanceRequest(UpdatedDescription, UpdatedMileage, UpdatedServiceDate);
 
         // Act
@@ -179,7 +179,7 @@ public class MaintenanceServiceTests
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(vehicle.VehicleId, Guid.NewGuid()));
@@ -193,7 +193,7 @@ public class MaintenanceServiceTests
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
         var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle.VehicleId);
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
 
         // Act
         await service.DeleteAsync(vehicle.VehicleId, maintenance.MaintenanceId);
@@ -209,7 +209,7 @@ public class MaintenanceServiceTests
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
 
         // Act
         var ex = await Assert.ThrowsAsync<NotFoundException>(() =>
@@ -228,7 +228,7 @@ public class MaintenanceServiceTests
         var vehicle1 = await DbSeeder.SeedVehicleAsync(context);
         var vehicle2 = await DbSeeder.SeedVehicleAsync(context);
         var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle1.VehicleId);
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
 
         // Act
         var ex = await Assert.ThrowsAsync<ConflictException>(() =>
@@ -246,7 +246,7 @@ public class MaintenanceServiceTests
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
         var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle.VehicleId);
-        var service = new MaintenanceService(context);
+        var service = new MaintenanceService(context, NullLogger<MaintenanceService>.Instance);
 
         // Act
         var ex = await Record.ExceptionAsync(() =>

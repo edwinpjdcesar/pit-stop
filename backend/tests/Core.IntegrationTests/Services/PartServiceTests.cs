@@ -18,7 +18,7 @@ public class PartServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new PartService(context);
+        var service = new PartService(context, NullLogger<PartService>.Instance);
 
         // Act
         var result = await service.GetAllAsync();
@@ -35,7 +35,7 @@ public class PartServiceTests
         await DbSeeder.SeedPartAsync(context, name: "Wiper Blades", description: "Replacement wipers");
         await DbSeeder.SeedPartAsync(context, name: "Air Filter", description: "Engine air filter");
         await DbSeeder.SeedPartAsync(context, name: OilFilterName, description: OilFilterDescription);
-        var service = new PartService(context);
+        var service = new PartService(context, NullLogger<PartService>.Instance);
 
         // Act
         var result = await service.GetAllAsync();
@@ -49,7 +49,7 @@ public class PartServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new PartService(context);
+        var service = new PartService(context, NullLogger<PartService>.Instance);
 
         // Act
         var result = await service.GetByIdAsync(Guid.NewGuid());
@@ -64,7 +64,7 @@ public class PartServiceTests
         // Arrange
         await using var context = TestDbContextFactory.Create();
         var part = await DbSeeder.SeedPartAsync(context);
-        var service = new PartService(context);
+        var service = new PartService(context, NullLogger<PartService>.Instance);
 
         // Act
         var result = await service.GetByIdAsync(part.PartId);
@@ -80,7 +80,7 @@ public class PartServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new PartService(context);
+        var service = new PartService(context, NullLogger<PartService>.Instance);
         var request = new PartRequest(Name: "Brake Pads", ModelNumber: "BP-456", Description: "Front brake pads");
 
         // Act
@@ -98,7 +98,7 @@ public class PartServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new PartService(context);
+        var service = new PartService(context, NullLogger<PartService>.Instance);
         var request = new PartRequest(Name: OilFilterName, ModelNumber: null, Description: OilFilterDescription);
 
         // Act
@@ -113,7 +113,7 @@ public class PartServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new PartService(context);
+        var service = new PartService(context, NullLogger<PartService>.Instance);
         var request = new PartRequest(Name: OilFilterName, ModelNumber: null, Description: OilFilterDescription);
 
         // Act
@@ -128,7 +128,7 @@ public class PartServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new PartService(context);
+        var service = new PartService(context, NullLogger<PartService>.Instance);
         var request = new PartRequest(Name: UpdatedName, ModelNumber: null, Description: UpdatedDescription);
 
         // Act
@@ -144,7 +144,7 @@ public class PartServiceTests
         // Arrange
         await using var context = TestDbContextFactory.Create();
         var part = await DbSeeder.SeedPartAsync(context);
-        var service = new PartService(context);
+        var service = new PartService(context, NullLogger<PartService>.Instance);
         var request = new PartRequest(Name: UpdatedName, ModelNumber: UpdatedModelNumber, Description: UpdatedDescription);
 
         // Act
@@ -161,7 +161,7 @@ public class PartServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new PartService(context);
+        var service = new PartService(context, NullLogger<PartService>.Instance);
 
         // Act
         var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(Guid.NewGuid()));
@@ -176,7 +176,7 @@ public class PartServiceTests
         // Arrange
         await using var context = TestDbContextFactory.Create();
         var part = await DbSeeder.SeedPartAsync(context);
-        var service = new PartService(context);
+        var service = new PartService(context, NullLogger<PartService>.Instance);
 
         // Act
         await service.DeleteAsync(part.PartId);
