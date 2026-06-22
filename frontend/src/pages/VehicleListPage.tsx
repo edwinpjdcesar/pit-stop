@@ -1,13 +1,17 @@
 import { useEffect, useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
+import Header from '../components/Header';
 import type { Vehicle } from '../types/vehicle';
-import { getVehicles } from '../services/vehicleService';
+import { deleteVehicle, getVehicles } from '../services/vehicleService';
 import styles from './VehicleListPage.module.css';
 
 export default function VehicleListPage() {
+  const navigate = useNavigate();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [deletingId, setDeletingId] = useState<string | null>(null);
+  const [deleteError, setDeleteError] = useState<string | null>(null);
 
   useEffect(() => {
     getVehicles()
@@ -16,26 +20,39 @@ export default function VehicleListPage() {
       .finally(() => setLoading(false));
   }, []);
 
+  async function handleDelete(vehicleId: string) {
+    if (!window.confirm('Delete this vehicle? This cannot be undone.')) return;
+    setDeletingId(vehicleId);
+    setDeleteError(null);
+    try {
+      await deleteVehicle(vehicleId);
+      setVehicles((prev) => prev.filter((v) => v.vehicleId !== vehicleId));
+    } catch (err: unknown) {
+      setDeleteError(err instanceof Error ? err.message : 'Failed to delete vehicle.');
+    } finally {
+      setDeletingId(null);
+    }
+  }
+
   return (
     <div className={styles.page}>
-      <header className={styles.header}>
-        <span className={styles.logo}>PitStop</span>
-        <nav>
-          <Link to="/parts">Parts Library</Link>
-        </nav>
-      </header>
+      <Header />
 
       <main className={styles.main}>
         <div className={styles.toolbar}>
           <h1>Vehicles</h1>
-          <button type="button" className={styles.primaryButton}>
+          <button
+            type="button"
+            className={styles.primaryButton}
+            onClick={() => navigate('/vehicles/new')}
+          >
             New Vehicle
           </button>
         </div>
 
         {loading && <p className={styles.status}>Loading...</p>}
-
         {error && <p className={styles.error}>{error}</p>}
+        {deleteError && <p className={styles.error}>{deleteError}</p>}
 
         {!loading && !error && vehicles.length === 0 && (
           <p className={styles.empty}>No vehicles found.</p>
@@ -65,8 +82,13 @@ export default function VehicleListPage() {
                   <td>{vehicle.mileage != null ? vehicle.mileage.toLocaleString() : '—'}</td>
                   <td className={styles.actions}>
                     <Link to={`/vehicles/${vehicle.vehicleId}`}>View</Link>
-                    <button type="button" className={styles.dangerButton}>
-                      Delete
+                    <button
+                      type="button"
+                      className={styles.dangerButton}
+                      onClick={() => handleDelete(vehicle.vehicleId)}
+                      disabled={deletingId === vehicle.vehicleId}
+                    >
+                      {deletingId === vehicle.vehicleId ? 'Deleting...' : 'Delete'}
                     </button>
                   </td>
                 </tr>
