@@ -19,7 +19,7 @@ public class MaintenancePartServiceTests
         // Arrange
         await using var context = TestDbContextFactory.Create();
         var part = await DbSeeder.SeedPartAsync(context);
-        var service = new MaintenancePartService(context);
+        var service = new MaintenancePartService(context, NullLogger<MaintenancePartService>.Instance);
         var request = new MaintenancePartRequest(Quantity: 1, UnitPrice: DefaultUnitPrice);
 
         // Act
@@ -37,7 +37,7 @@ public class MaintenancePartServiceTests
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
         var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle.VehicleId);
-        var service = new MaintenancePartService(context);
+        var service = new MaintenancePartService(context, NullLogger<MaintenancePartService>.Instance);
         var request = new MaintenancePartRequest(Quantity: 1, UnitPrice: DefaultUnitPrice);
 
         // Act
@@ -56,7 +56,7 @@ public class MaintenancePartServiceTests
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
         var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle.VehicleId);
         var part = await DbSeeder.SeedPartAsync(context);
-        var service = new MaintenancePartService(context);
+        var service = new MaintenancePartService(context, NullLogger<MaintenancePartService>.Instance);
         var request = new MaintenancePartRequest(Quantity: 1, UnitPrice: DefaultUnitPrice);
         await service.AddPartAsync(maintenance.MaintenanceId, part.PartId, request);
 
@@ -73,7 +73,7 @@ public class MaintenancePartServiceTests
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
         var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle.VehicleId);
         var part = await DbSeeder.SeedPartAsync(context);
-        var service = new MaintenancePartService(context);
+        var service = new MaintenancePartService(context, NullLogger<MaintenancePartService>.Instance);
         var request = new MaintenancePartRequest(Quantity: DefaultQuantity, UnitPrice: DefaultUnitPrice);
 
         // Act
@@ -96,7 +96,7 @@ public class MaintenancePartServiceTests
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
         var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle.VehicleId);
         var part = await DbSeeder.SeedPartAsync(context);
-        var service = new MaintenancePartService(context);
+        var service = new MaintenancePartService(context, NullLogger<MaintenancePartService>.Instance);
         var request = new MaintenancePartRequest(Quantity: 1, UnitPrice: DefaultUnitPrice);
 
         // Act
@@ -111,7 +111,7 @@ public class MaintenancePartServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new MaintenancePartService(context);
+        var service = new MaintenancePartService(context, NullLogger<MaintenancePartService>.Instance);
         var request = new MaintenancePartRequest(Quantity: UpdatedQuantity, UnitPrice: UpdatedUnitPrice);
 
         // Act & Assert
@@ -127,7 +127,7 @@ public class MaintenancePartServiceTests
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
         var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle.VehicleId);
         var part = await DbSeeder.SeedPartAsync(context);
-        var service = new MaintenancePartService(context);
+        var service = new MaintenancePartService(context, NullLogger<MaintenancePartService>.Instance);
         await service.AddPartAsync(maintenance.MaintenanceId, part.PartId, new MaintenancePartRequest(1, DefaultUnitPrice));
         var updateRequest = new MaintenancePartRequest(Quantity: UpdatedQuantity, UnitPrice: UpdatedUnitPrice);
 
@@ -144,7 +144,7 @@ public class MaintenancePartServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new MaintenancePartService(context);
+        var service = new MaintenancePartService(context, NullLogger<MaintenancePartService>.Instance);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(() => service.RemovePartAsync(Guid.NewGuid(), Guid.NewGuid()));
@@ -159,7 +159,7 @@ public class MaintenancePartServiceTests
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
         var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle.VehicleId);
         var part = await DbSeeder.SeedPartAsync(context);
-        var service = new MaintenancePartService(context);
+        var service = new MaintenancePartService(context, NullLogger<MaintenancePartService>.Instance);
         await service.AddPartAsync(maintenance.MaintenanceId, part.PartId, new MaintenancePartRequest(1, DefaultUnitPrice));
 
         // Act
@@ -178,7 +178,7 @@ public class MaintenancePartServiceTests
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
         var maintenance = await DbSeeder.SeedMaintenanceAsync(context, vehicle.VehicleId);
         var part = await DbSeeder.SeedPartAsync(context);
-        var service = new MaintenancePartService(context);
+        var service = new MaintenancePartService(context, NullLogger<MaintenancePartService>.Instance);
         await service.AddPartAsync(maintenance.MaintenanceId, part.PartId, new MaintenancePartRequest(1, DefaultUnitPrice));
 
         // Act

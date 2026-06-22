@@ -14,7 +14,7 @@ public class MakeServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new MakeService(context);
+        var service = new MakeService(context, NullLogger<MakeService>.Instance);
 
         // Act
         var result = await service.GetAllAsync();
@@ -34,7 +34,7 @@ public class MakeServiceTests
             new Domain.Entities.Make { MakeId = 3, Code = "FORD", Name = "Ford" }
         );
         await context.SaveChangesAsync();
-        var service = new MakeService(context);
+        var service = new MakeService(context, NullLogger<MakeService>.Instance);
 
         // Act
         var result = await service.GetAllAsync();
@@ -51,7 +51,7 @@ public class MakeServiceTests
         await using var context = TestDbContextFactory.Create();
         context.Makes.Add(new Domain.Entities.Make { MakeId = HondaMakeId, Code = HondaCode, Name = HondaName });
         await context.SaveChangesAsync();
-        var service = new MakeService(context);
+        var service = new MakeService(context, NullLogger<MakeService>.Instance);
 
         // Act
         var result = await service.GetAllAsync();

@@ -19,7 +19,7 @@ public class ModelServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new ModelService(context);
+        var service = new ModelService(context, NullLogger<ModelService>.Instance);
 
         // Act & Assert
         await Assert.ThrowsAsync<NotFoundException>(() => service.GetByMakeAsync(NonExistentMakeId));
@@ -32,7 +32,7 @@ public class ModelServiceTests
         await using var context = TestDbContextFactory.Create();
         context.Makes.Add(new Domain.Entities.Make { MakeId = HondaMakeId, Code = HondaCode, Name = HondaName });
         await context.SaveChangesAsync();
-        var service = new ModelService(context);
+        var service = new ModelService(context, NullLogger<ModelService>.Instance);
 
         // Act
         var result = await service.GetByMakeAsync(HondaMakeId);
@@ -49,7 +49,7 @@ public class ModelServiceTests
         var (make, _) = await DbSeeder.SeedMakeAndModelAsync(context);
         context.Models.Add(new Domain.Entities.Model { ModelId = 2, MakeId = make.MakeId, Code = "ACCORD", Name = "Accord" });
         await context.SaveChangesAsync();
-        var service = new ModelService(context);
+        var service = new ModelService(context, NullLogger<ModelService>.Instance);
 
         // Act
         var result = await service.GetByMakeAsync(make.MakeId);
@@ -65,7 +65,7 @@ public class ModelServiceTests
         // Arrange
         await using var context = TestDbContextFactory.Create();
         var (make, _) = await DbSeeder.SeedMakeAndModelAsync(context);
-        var service = new ModelService(context);
+        var service = new ModelService(context, NullLogger<ModelService>.Instance);
 
         // Act
         var result = await service.GetByMakeAsync(make.MakeId);
@@ -93,7 +93,7 @@ public class ModelServiceTests
             new Domain.Entities.Model { ModelId = 2, MakeId = 2, Code = "CAMRY", Name = "Camry" }
         );
         await context.SaveChangesAsync();
-        var service = new ModelService(context);
+        var service = new ModelService(context, NullLogger<ModelService>.Instance);
 
         // Act
         var result = await service.GetByMakeAsync(1);

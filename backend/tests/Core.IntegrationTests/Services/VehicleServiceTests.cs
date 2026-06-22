@@ -17,7 +17,7 @@ public class VehicleServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
 
         // Act
         var result = await service.GetAllAsync();
@@ -35,7 +35,7 @@ public class VehicleServiceTests
         await DbSeeder.SeedVehicleAsync(context, year: 2022);
         await DbSeeder.SeedVehicleAsync(context, year: 2018);
         await DbSeeder.SeedVehicleAsync(context, year: 2020);
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
 
         // Act
         var result = await service.GetAllAsync();
@@ -49,7 +49,7 @@ public class VehicleServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
 
         // Act
         var result = await service.GetByIdAsync(Guid.NewGuid());
@@ -65,7 +65,7 @@ public class VehicleServiceTests
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
 
         // Act
         var result = await service.GetByIdAsync(vehicle.VehicleId);
@@ -83,7 +83,7 @@ public class VehicleServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
         var request = new VehicleRequest(MakeId: 99, ModelId: 1, VIN: null, LicensePlate: null,
             Year: 2020, PurchaseDate: null, PurchasePrice: null, MileageAtPurchase: null, Mileage: null);
 
@@ -100,7 +100,7 @@ public class VehicleServiceTests
         // Arrange
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
         var request = new VehicleRequest(MakeId: 1, ModelId: 99, VIN: null, LicensePlate: null,
             Year: 2020, PurchaseDate: null, PurchasePrice: null, MileageAtPurchase: null, Mileage: null);
 
@@ -120,7 +120,7 @@ public class VehicleServiceTests
         context.Makes.Add(new Domain.Entities.Make { MakeId = 2, Code = "TOYOTA", Name = "Toyota" });
         context.Models.Add(new Domain.Entities.Model { ModelId = 2, MakeId = 2, Code = "CAMRY", Name = "Camry" });
         await context.SaveChangesAsync();
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
         var request = new VehicleRequest(MakeId: 1, ModelId: 2, VIN: null, LicensePlate: null,
             Year: 2020, PurchaseDate: null, PurchasePrice: null, MileageAtPurchase: null, Mileage: null);
 
@@ -137,7 +137,7 @@ public class VehicleServiceTests
         // Arrange
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
         var request = new VehicleRequest(MakeId: 1, ModelId: 1, VIN: "1HGCM82633A123456",
             LicensePlate: "ABC123", Year: 2021, PurchaseDate: new DateOnly(2023, 1, 15),
             PurchasePrice: 22000m, MileageAtPurchase: 0, Mileage: 5000);
@@ -158,7 +158,7 @@ public class VehicleServiceTests
         // Arrange
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
         var request = new VehicleRequest(MakeId: 1, ModelId: 1, VIN: null, LicensePlate: null,
             Year: 2020, PurchaseDate: null, PurchasePrice: null, MileageAtPurchase: null, Mileage: null);
 
@@ -179,7 +179,7 @@ public class VehicleServiceTests
         context.Makes.Add(new Domain.Entities.Make { MakeId = 2, Code = "TOYOTA", Name = "Toyota" });
         context.Models.Add(new Domain.Entities.Model { ModelId = 2, MakeId = 2, Code = "CAMRY", Name = "Camry" });
         await context.SaveChangesAsync();
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
         var request = new VehicleRequest(MakeId: 1, ModelId: 2, VIN: null, LicensePlate: null,
             Year: 2020, PurchaseDate: null, PurchasePrice: null, MileageAtPurchase: null, Mileage: null);
 
@@ -196,7 +196,7 @@ public class VehicleServiceTests
         // Arrange
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
         var request = new VehicleRequest(MakeId: 1, ModelId: 1, VIN: null, LicensePlate: null,
             Year: 2020, PurchaseDate: null, PurchasePrice: null, MileageAtPurchase: null, Mileage: null);
 
@@ -214,7 +214,7 @@ public class VehicleServiceTests
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
         var request = new VehicleRequest(MakeId: 1, ModelId: 1, VIN: UpdatedVin,
             LicensePlate: UpdatedLicensePlate, Year: UpdatedYear,
             PurchaseDate: null, PurchasePrice: null, MileageAtPurchase: null, Mileage: UpdatedMileage);
@@ -234,7 +234,7 @@ public class VehicleServiceTests
     {
         // Arrange
         await using var context = TestDbContextFactory.Create();
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
 
         // Act
         var ex = await Assert.ThrowsAsync<NotFoundException>(() => service.DeleteAsync(Guid.NewGuid()));
@@ -250,7 +250,7 @@ public class VehicleServiceTests
         await using var context = TestDbContextFactory.Create();
         await DbSeeder.SeedMakeAndModelAsync(context);
         var vehicle = await DbSeeder.SeedVehicleAsync(context);
-        var service = new VehicleService(context);
+        var service = new VehicleService(context, NullLogger<VehicleService>.Instance);
 
         // Act
         await service.DeleteAsync(vehicle.VehicleId);

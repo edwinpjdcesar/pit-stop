@@ -7,7 +7,19 @@ using Scalar.AspNetCore;
 var builder = WebApplication.CreateBuilder(args);
 
 builder.Services.AddControllers();
-builder.Services.AddOpenApi();
+var openApiServerUrl = builder.Configuration["OpenApi:ServerUrl"];
+
+builder.Services.AddOpenApi(options =>
+{
+    if (!string.IsNullOrEmpty(openApiServerUrl))
+    {
+        options.AddDocumentTransformer((document, context, cancellationToken) =>
+        {
+            document.Servers = [new Microsoft.OpenApi.OpenApiServer { Url = openApiServerUrl }];
+            return Task.CompletedTask;
+        });
+    }
+});
 
 var connectionString = builder.Configuration.GetConnectionString("DefaultConnection")
     ?? throw new InvalidOperationException("Connection string 'DefaultConnection' is not configured.");
