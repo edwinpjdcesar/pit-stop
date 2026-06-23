@@ -4,7 +4,6 @@ import Header from '../components/Header';
 import type { Vehicle } from '../types/vehicle';
 import { deleteVehicle, getVehicles } from '../services/vehicleService';
 import styles from './VehicleListPage.module.css';
-
 export default function VehicleListPage() {
   const navigate = useNavigate();
   const [vehicles, setVehicles] = useState<Vehicle[]>([]);
@@ -41,13 +40,18 @@ export default function VehicleListPage() {
       <main className={styles.main}>
         <div className={styles.toolbar}>
           <h1>Vehicles</h1>
-          <button
-            type="button"
-            className={styles.primaryButton}
-            onClick={() => navigate('/vehicles/new')}
-          >
-            New Vehicle
-          </button>
+          <div className={styles.toolbarActions}>
+            <Link to="/parts" className={styles.secondaryButton}>
+              Parts Library
+            </Link>
+            <button
+              type="button"
+              className={styles.primaryButton}
+              onClick={() => navigate('/vehicles/new')}
+            >
+              New Vehicle
+            </button>
+          </div>
         </div>
 
         {loading && <p className={styles.status}>Loading...</p>}
