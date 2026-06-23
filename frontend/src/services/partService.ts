@@ -1,4 +1,5 @@
-import type { Part, PartRequest } from '../types/part';
+import type { Part } from '../types/part';
+import type { PartRequest } from '../types/partRequest';
 import { parseApiError } from '../utils/parseApiError';
 
 const baseUrl = import.meta.env.VITE_API_URL;

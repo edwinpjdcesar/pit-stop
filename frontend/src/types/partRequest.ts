@@ -1,5 +1,4 @@
-export type Part = {
-  partId: string;
+export type PartRequest = {
   name: string;
   modelNumber: string | null;
   description: string;
