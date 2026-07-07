@@ -1,6 +1,7 @@
-# Skill: Unit Testing
-
-Use this skill whenever you are asked to write unit tests. It defines how to write tests that are fast, isolated, readable, and trustworthy.
+---
+name: unit-testing
+description: Guide for writing unit tests. Use this skill whenever you are asked to write unit tests. It defines how to write tests that are fast, isolated, readable, and trustworthy.
+---
 
 This skill applies to any language that supports the following practices: **.NET (xUnit, NUnit, MSTest), Java (JUnit, TestNG), JavaScript/TypeScript (Jest, Vitest), Python (pytest, unittest), Go (testing package)**, and any other ecosystem that follows Arrange-Act-Assert patterns.
 

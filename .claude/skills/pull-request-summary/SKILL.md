@@ -1,7 +1,6 @@
-# Skill: Pull Request Summary
-
-Use this skill whenever you are creating a pull request. It defines how to write the PR description so that it's useful, readable, and honest about what changed.
-
+---
+name: pull-request-summary
+description: Guide for writing pull request descriptions. Use this skill whenever you are creating a pull request. It defines how to write the PR description so that it's useful, readable, and honest about what changed.
 ---
 
 ## What this skill covers
@@ -55,6 +54,14 @@ These apply regardless of the size of the change:
 5. **Earn every word.** If a sentence doesn't help the reviewer understand the change, cut it.
 
 6. **Write GitHub markdown.** The PR body renders as GitHub-flavored markdown. Use headings, bullet lists, inline code, and code blocks where they improve readability. Don't write plain prose when structure would make it clearer.
+
+---
+
+## PR title
+
+Your PR title should describe the change in a clear, concise way. Think of it as the subject line of an email, the reviewer should know what they're about to look at before they open the diff.
+
+No need to put the details here, that's what the description is for. The title is a one-line summary that helps reviewers prioritize and triage.
 
 ---
 
