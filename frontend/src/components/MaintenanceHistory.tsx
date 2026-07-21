@@ -1,7 +1,9 @@
-import { useEffect, useState } from 'react';
+import { Fragment, useEffect, useState } from 'react';
 import MaintenanceFormModal from './MaintenanceFormModal';
+import MaintenancePartsPanel from './MaintenancePartsPanel';
 import { deleteMaintenanceRecord, getMaintenanceRecords } from '../services/maintenanceService';
 import type { MaintenanceRecord } from '../types/maintenance';
+import type { MaintenancePart } from '../types/maintenancePart';
 import styles from './MaintenanceHistory.module.css';
 
 type Props = {
@@ -16,6 +18,7 @@ export default function MaintenanceHistory({ vehicleId }: Props) {
   const [editingRecord, setEditingRecord] = useState<MaintenanceRecord | null>(null);
   const [deletingId, setDeletingId] = useState<string | null>(null);
   const [deleteError, setDeleteError] = useState<string | null>(null);
+  const [expandedIds, setExpandedIds] = useState<Set<string>>(new Set());
 
   useEffect(() => {
     getMaintenanceRecords(vehicleId)
@@ -47,6 +50,24 @@ export default function MaintenanceHistory({ vehicleId }: Props) {
       return [record, ...prev];
     });
     handleCloseModal();
+  }
+
+  function toggleExpanded(maintenanceId: string) {
+    setExpandedIds((prev) => {
+      const next = new Set(prev);
+      if (next.has(maintenanceId)) {
+        next.delete(maintenanceId);
+      } else {
+        next.add(maintenanceId);
+      }
+      return next;
+    });
+  }
+
+  function handlePartsChanged(maintenanceId: string, parts: MaintenancePart[]) {
+    setRecords((prev) =>
+      prev.map((r) => (r.maintenanceId === maintenanceId ? { ...r, maintenanceParts: parts } : r))
+    );
   }
 
   async function handleDelete(maintenanceId: string) {
@@ -93,37 +114,70 @@ export default function MaintenanceHistory({ vehicleId }: Props) {
         <table className={styles.table}>
           <thead>
             <tr>
+              <th className={styles.expanderCol}></th>
               <th>Date</th>
               <th>Description</th>
               <th>Mileage</th>
+              <th>Parts</th>
               <th></th>
             </tr>
           </thead>
           <tbody>
-            {records.map((record) => (
-              <tr key={record.maintenanceId}>
-                <td>{new Date(record.serviceDate).toLocaleDateString()}</td>
-                <td>{record.description}</td>
-                <td>{record.mileage.toLocaleString()}</td>
-                <td className={styles.tableActions}>
-                  <button
-                    type="button"
-                    className={styles.editButton}
-                    onClick={() => handleOpenEdit(record)}
-                  >
-                    Edit
-                  </button>
-                  <button
-                    type="button"
-                    className={styles.deleteButton}
-                    onClick={() => handleDelete(record.maintenanceId)}
-                    disabled={deletingId === record.maintenanceId}
-                  >
-                    {deletingId === record.maintenanceId ? 'Deleting...' : 'Delete'}
-                  </button>
-                </td>
-              </tr>
-            ))}
+            {records.map((record) => {
+              const isExpanded = expandedIds.has(record.maintenanceId);
+              return (
+                <Fragment key={record.maintenanceId}>
+                  <tr>
+                    <td>
+                      <button
+                        type="button"
+                        className={styles.expander}
+                        aria-label={isExpanded ? 'Collapse parts' : 'Expand parts'}
+                        aria-expanded={isExpanded}
+                        onClick={() => toggleExpanded(record.maintenanceId)}
+                      >
+                        {isExpanded ? '▾' : '▸'}
+                      </button>
+                    </td>
+                    <td>{new Date(record.serviceDate).toLocaleDateString()}</td>
+                    <td>{record.description}</td>
+                    <td>{record.mileage.toLocaleString()}</td>
+                    <td>{record.maintenanceParts.length}</td>
+                    <td className={styles.tableActions}>
+                      <button
+                        type="button"
+                        className={styles.editButton}
+                        onClick={() => handleOpenEdit(record)}
+                      >
+                        Edit
+                      </button>
+                      <button
+                        type="button"
+                        className={styles.deleteButton}
+                        onClick={() => handleDelete(record.maintenanceId)}
+                        disabled={deletingId === record.maintenanceId}
+                      >
+                        {deletingId === record.maintenanceId ? 'Deleting...' : 'Delete'}
+                      </button>
+                    </td>
+                  </tr>
+                  {isExpanded && (
+                    <tr>
+                      <td colSpan={6} className={styles.expandedCell}>
+                        <MaintenancePartsPanel
+                          vehicleId={vehicleId}
+                          maintenanceId={record.maintenanceId}
+                          parts={record.maintenanceParts}
+                          onPartsChanged={(parts) =>
+                            handlePartsChanged(record.maintenanceId, parts)
+                          }
+                        />
+                      </td>
+                    </tr>
+                  )}
+                </Fragment>
+              );
+            })}
           </tbody>
         </table>
       )}

@@ -91,6 +91,28 @@
   align-items: center;
 }
 
+.expanderCol {
+  width: 36px;
+}
+
+.expander {
+  padding: 2px 6px;
+  background: none;
+  border: none;
+  color: #666666;
+  font-size: 12px;
+  line-height: 1;
+}
+
+.expander:hover {
+  color: #1a1a1a;
+}
+
+.expandedCell {
+  padding: 0 !important;
+  background: #fafafa;
+}
+
 .editButton {
   padding: 4px 10px;
   background: none;
