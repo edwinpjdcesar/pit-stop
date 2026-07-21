@@ -15,6 +15,8 @@ When asked to write unit tests for any language (including .NET, Java, JavaScrip
 
 When creating a new branch, always follow the `git-branch-name` skill (`.claude/skills/git-branch-name`).
 
+When the user says they have approved or merged the pull request for the current branch, always follow the `complete-branch` skill (`.claude/skills/complete-branch`).
+
 ## Frontend
 When making changes to React code, always run `npm run build` inside the `frontend/` directory to validate the project builds without errors before considering the task complete.
 
