@@ -15,6 +15,9 @@ When asked to write unit tests for any language (including .NET, Java, JavaScrip
 
 When creating a new branch, always follow the `git-branch-name` skill (`.claude/skills/git-branch-name`).
 
+## Frontend
+When making changes to React code, always run `npm run build` inside the `frontend/` directory to validate the project builds without errors before considering the task complete.
+
 ## Git Workflow
 This project follows Git Flow. `feature/*` and other working branches target `dev`. When creating a branch or opening a pull request, branch from `dev` and set `dev` as the PR base unless the user explicitly directs otherwise.
 
