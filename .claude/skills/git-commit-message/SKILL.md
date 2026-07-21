@@ -1,7 +1,6 @@
-# Skill: Git Commit Message
-
-Use this skill whenever you are committing changes. It defines how to write a commit message that is clear, consistent, and useful to anyone reading the project history.
-
+---
+name: git-commit-message
+description: Guide for writing git commit messages. Use this skill whenever you are committing changes. It defines how to write a commit message that is clear, consistent, and useful to anyone reading the project history.
 ---
 
 ## When to use a single-line message
