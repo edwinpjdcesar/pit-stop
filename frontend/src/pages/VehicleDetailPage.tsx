@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react';
 import { Link, useNavigate, useParams } from 'react-router-dom';
 import Header from '../components/Header';
+import MaintenanceHistory from '../components/MaintenanceHistory';
 import { deleteVehicle, getVehicle } from '../services/vehicleService';
 import type { Vehicle } from '../types/vehicle';
 import styles from './VehicleDetailPage.module.css';
@@ -36,7 +37,7 @@ export default function VehicleDetailPage() {
     }
   }
 
-  if (loading) {
+  if (loading || !vehicleId) {
     return (
       <div className={styles.page}>
         <Header />
@@ -146,6 +147,8 @@ export default function VehicleDetailPage() {
             </dl>
           </div>
         </div>
+
+        <MaintenanceHistory vehicleId={vehicleId} />
       </main>
     </div>
   );
